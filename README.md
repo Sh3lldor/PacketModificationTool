@@ -25,8 +25,7 @@ python3 parse.py --pcap g.pcapng --list --modify --pcapName g2.pcapng
 
 ## Pictures
 1) Change packet data with flags
-
 ![alt text](https://github.com/Sh3lldor/PacketModificationTool/blob/main/Pics/1.PNG)
-2) Change packet data Manually
 
+2) Change packet data Manually
 ![alt text](https://github.com/Sh3lldor/PacketModificationTool/blob/main/Pics/2.PNG)
