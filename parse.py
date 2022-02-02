@@ -2,7 +2,7 @@ import sys
 from scapy.all import *
 from scapy.utils import rdpcap
 import fire
-
+import re
 
 class bcolors:
     HEADER = '\033[95m'
@@ -16,8 +16,30 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
+def showHelp():
+    print("=========================== Packet Modification Tool ===========================\n \
+Args:\n \
+    --pcap      The name of the PCAP to parse\n \
+    --list      If supplied, more details will be printed\n \
+    --modify    If supplied, the PCAP file will be modified\n \
+    --pcapName  The new PCAP name, Is necessary when using --modify\n \
+    --send      Sending the new PCAP, --modify and --pcapName are necessary\n \
+    --srcIP     The new source ip for the packets\n \
+    --srcPort   The new source port for the packets\n \
+    --dstIP     The new destination ip for the packets\n \
+    --dstPort   The new destination port for the packets\n \
+    --rawdata   The new data (Raw format)\n \
+    --hexdata   The new data (Hex format)\n \
+    --help      Show this help msg\n \
+                                                                      @elad_pt")
+    
+
+
 def pcapFile(pcap="",list=False,modify=False,pcapName="",send=False,srcIP="",srcPort="",dstIP="", \
-             dstPort="",data=""):
+             dstPort="",rawdata="",hexdata="", help=False):
+    if help:
+        showHelp()
+        sys.exit(0)
     if pcap == "":
         print("[x] No PCAP file was specified")
         sys.exit(1)
@@ -33,11 +55,11 @@ def pcapFile(pcap="",list=False,modify=False,pcapName="",send=False,srcIP="",src
             count += 1
         if modify: 
             if pcapName:
-                newPkts.append(modify_packet_layers(pkt, srcIP, srcPort,dstIP, dstPort, data))
+                newPkts.append(modify_packet_layers(pkt, srcIP, srcPort,dstIP, dstPort, rawdata, hexdata))
             else:
                 print("[x] --pcapName flag is required")
                 sys.exit(1)
-                
+
     if modify:
         wrpcap(pcapName, newPkts)
         if list:
@@ -60,10 +82,11 @@ def get_packet_layers(packet, count):
     rawData = packet[Raw].load
     print(bcolors.OKGREEN + "[%s] Details %s:%s -> %s:%s" % \
     (count,srcIP,srcPort,dstIP,dstPort) + bcolors.ENDC )
-    print("[%s] Data: %s " % (count,rawData))
+    print("[%s] Bin Data: %s " % (count,bytes_hex(rawData)))
+    print("[%s] Raw Data: %s " % (count,rawData))
 
 
-def modify_packet_layers(packet,sourceIP="",sourcePort="",destinationIP="",destinationPort="",rawData=""):
+def modify_packet_layers(packet,sourceIP="",sourcePort="",destinationIP="",destinationPort="",rawData="", hexdata=""):
     flag = 1
     if sourceIP:
         packet[IP].src = sourceIP
@@ -77,26 +100,35 @@ def modify_packet_layers(packet,sourceIP="",sourcePort="",destinationIP="",desti
     if destinationPort:
         packet[TCP].dport = destinationPort
         flag = 0
-    if rawData:
-        packet[Raw].load = rawData
+    if rawData or hexdata:
+        if rawData:
+            packet[Raw].load = rawData
+        else:
+            packet[Raw].load = hex_bytes(hexdata)
         flag = 0
-
+    
     if flag:
         print("[x] Current src IP: %s" % packet[IP].src)
         newSrcIp = input("[x] New src IP [Enter to Unchange]: ")
         print("[x] Current dst IP: %s" % packet[IP].dst)
         newDstIp = input("[x] New dst IP [Enter to Unchange]: ")
         print("[x] Current data: %s" % packet[Raw].load)
+        dataType = input("[x] Raw or Hex data [Type r/h]: ")
         newData = input("[x] New data [Enter to Unchange]: ")
         if newSrcIp:
             packet[IP].src = newSrcIp
         if newDstIp:
             packet[IP].dst = newDstIp
         if newData:
-            packet[Raw].load = newData
+            if dataType == "r":
+                packet[Raw].load = newData
+            elif dataType == "h":
+                packet[Raw].load = hex_bytes(newData)
+            else:
+                print("[x] No data type ! exsiting.")
+                sys.exit(1)
     
     return packet
-
 
 if __name__ == '__main__':
     fire.Fire(pcapFile)
