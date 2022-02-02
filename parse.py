@@ -24,12 +24,12 @@ Args:\n \
     --modify    If supplied, the PCAP file will be modified\n \
     --pcapName  The new PCAP name, Is necessary when using --modify\n \
     --send      Sending the new PCAP, --modify and --pcapName are necessary\n \
-    --srcIP     The new source ip for the packets\n \
-    --srcPort   The new source port for the packets\n \
-    --dstIP     The new destination ip for the packets\n \
-    --dstPort   The new destination port for the packets\n \
-    --rawdata   The new data (Raw format)\n \
-    --hexdata   The new data (Hex format)\n \
+    --srcIP     The new source ip for the packets, --modify is necessary\n \
+    --srcPort   The new source port for the packets, --modify is necessary\n \
+    --dstIP     The new destination ip for the packets, --modify is necessary\n \
+    --dstPort   The new destination port for the packets, --modify is necessary\n \
+    --rawdata   The new data (Raw format), --modify is necessary\n \
+    --hexdata   The new data (Hex format), --modify is necessary\n \
     --help      Show this help msg\n \
                                                                       @elad_pt")
     
