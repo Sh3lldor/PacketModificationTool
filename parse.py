@@ -40,7 +40,7 @@ def pcapFile(pcap="",list=False,modify=False,pcapName="",send=False,srcIP="",src
     if help:
         showHelp()
         sys.exit(0)
-        
+
     if pcap == "":
         print("[x] No PCAP file was specified")
         sys.exit(1)
