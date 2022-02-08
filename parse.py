@@ -83,7 +83,7 @@ def get_packet_layers(packet, count):
     rawData = packet[Raw].load
     print(bcolors.OKGREEN + "[%s] Details %s:%s -> %s:%s" % \
     (count,srcIP,srcPort,dstIP,dstPort) + bcolors.ENDC )
-    print("[%s] Bin Data: %s " % (count,bytes_hex(rawData)))
+    print("[%s] Hex Data: %s " % (count,bytes_hex(rawData)))
     print("[%s] Raw Data: %s " % (count,rawData))
 
 
