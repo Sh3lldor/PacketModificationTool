@@ -2,8 +2,8 @@
 Little script to parse PCAP files
 
 ## Installation
-pip3 install -r requirements.txt
-sudo apt install xxd
+1) pip3 install -r requirements.txt
+2) sudo apt install xxd
 
 ## Usage
 1) pip3 install -r requirements.txt
