@@ -1,2 +1,4 @@
 fire
 scapy
+six
+termcolor
