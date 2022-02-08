@@ -6,8 +6,8 @@ Little script to parse PCAP files
 2) sudo apt install xxd
 
 ## Usage
-1) pip3 install -r requirements.txt
-2) python3 parse.py
+1) python3 parse.py
+2) ./convert.sh encode/decode <HEX data/RAW data>
 
 ## Example
 
